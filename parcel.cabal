@@ -1,0 +1,150 @@
+cabal-version:      2.4
+name:               parcel
+version:            0.1.0.0
+synopsis:
+
+-- A longer description of the package.
+-- description:
+homepage:
+
+-- A URL where users can report bugs.
+-- bug-reports:
+license:            NONE
+author:             Santiago Weight
+maintainer:         santiago.weight@lmns.com
+
+-- A copyright notice.
+-- copyright:
+-- category:
+extra-source-files: CHANGELOG.md
+
+flag dev
+  description: Turn on development settings.
+  default: False
+  manual: True
+
+common shared-properties
+  default-language: GHC2021
+
+  if flag(dev)
+    cpp-options: -DINCLUDE_DEBUG_TRACE
+
+  ghc-options:
+      -fprint-potential-instances
+      -Wall
+      -Wunused-packages
+      -- -Wpartial-fields
+      -Wmissing-export-lists
+      -Wmissing-deriving-strategies
+      -Wno-name-shadowing
+      -Wno-type-defaults
+      -Wno-unticked-promoted-constructors
+  default-extensions:
+      DefaultSignatures
+      DeriveAnyClass
+      DerivingVia
+      DuplicateRecordFields
+      GADTs
+      LambdaCase
+      MultiWayIf
+      NoImplicitPrelude
+      OverloadedLabels
+      OverloadedRecordDot
+      PatternSynonyms
+      RecordWildCards
+      RecursiveDo
+      StrictData
+      TypeFamilies
+      UnicodeSyntax
+      ViewPatterns
+
+library
+    import: shared-properties
+    exposed-modules:
+      Parcel
+      Parcel.Class
+      Parcel.Cpp
+      Parcel.Python
+      Parcel.Python.Gen
+      Parcel.Python.Repr
+      Parcel.Python.Utils
+      Parcel.Utils
+
+    -- Modules included in this library but not exported.
+    -- other-modules:
+
+    -- LANGUAGE extensions used by modules in this package.
+    -- other-extensions:
+    build-depends:
+        base >=4.12 && <5
+      , aeson
+      , algebraic-graphs
+      , bytestring
+      , cassava
+      , containers
+      , diagrams-graphviz == 1.4.1.1
+      , filepath
+      , diagrams-lib
+      , diagrams-svg
+      , extra
+      , fgl
+      , foldl
+      , generic-data
+      , generic-lens == 2.2.1.0
+      , graphviz
+      , intervals
+      , language-c
+      , language-python
+      , lens
+      , megaparsec
+      , monad-logger
+      , MonadRandom
+      , mtl
+      , optparse-applicative
+      , optparse-generic >= 1.4.6
+      , parser-combinators
+      , pretty
+      , prettyprinter
+      , primitive
+      , profunctors
+      , random
+      , scientific
+      , servant
+      , streaming
+      , text
+      , transformers
+      , vector
+      , yaml
+    hs-source-dirs:   src
+    default-language: GHC2021
+
+test-suite parcel-test
+    import: shared-properties
+    default-language: GHC2021
+    type:             exitcode-stdio-1.0
+    hs-source-dirs:   test
+    main-is:          Runner.hs
+    other-modules:
+      Test.Parcel
+    build-depends:
+      base >=4.12 && <5
+      , aeson
+      , bytestring
+      , containers
+      , directory
+      , filepath
+      , hspec-expectations
+      , intervals
+      , language-python
+      , lens
+      , megaparsec
+      , monad-logger
+      , mtl
+      , optparse-generic
+      , parcel
+      , pretty
+      , streaming
+      , tasty
+      , tasty-golden
+      , tasty-hunit
+      , text

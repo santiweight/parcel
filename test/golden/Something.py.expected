@@ -1,0 +1,22 @@
+import json as json
+import utils as utils
+from pathlib import Path
+from typing import *
+@dataclass
+class Something:
+    field1 : MaybeInt
+    field2 : EitherIntSomething
+    field3 : SimpleEnum
+    def encode(self):
+        return {"tag": "Something", "field1": self.field1.encode(), "field2": self.field2.encode(), "field3": self.field3.encode()}
+    @classmethod
+    def decode(cls, obj):
+        return cls(field1=MaybeInt.decode(obj["field1"]), field2=EitherIntSomething.decode(obj["field2"]), field3=SimpleEnum.decode(obj["field3"]))
+    @classmethod
+    def load(cls):
+        currPath = Path(__file__)
+        dataDirPath = currPath.parent
+        jsonPath = dataDirPath / "data/Something.json"
+        with jsonPath.open() as f :
+            res = json.load(f)
+            return cls.decode(res)
